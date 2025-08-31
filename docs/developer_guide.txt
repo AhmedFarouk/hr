@@ -1,0 +1,145 @@
+دليل المطور يحتوي على هيكل القاعدة والأكواد.
+# Developer Guide - HR System
+
+## Structure
+
+
+// دليل المشروع الرئيسي:
+/hr_system/
+├── config/
+│   └── db.php                # إعدادات الاتصال بقاعدة البيانات
+│   └── constants.php         # ثوابت النظام العامة مثل اسم الشركة والمسارات
+├── includes/
+│   └── header.php            # رأس الصفحات المشترك
+│   └── footer.php            # تذييل الصفحات
+│   └── auth.php              # التحقق من تسجيل الدخول والصلاحيات
+├── installer/
+│   └── installer.php         # سكريبت تثبيت القاعدة تلقائيًا
+│   └── schema.sql            # إنشاء جداول القاعدة
+├── admin/
+│   └── index.php             # لوحة تحكم المشرفين
+│   └── login.php             # تسجيل دخول المشرف
+│   └── logout.php            # تسجيل الخروج
+│   └── permissions/
+│       ├── index.php         # عرض الصلاحيات
+│       ├── edit.php          # تعديل صلاحيات مشرف
+│       └── save.php          # حفظ التعديلات
+├── branches/
+│   ├── index.php             # عرض الفروع
+│   ├── add.php               # إضافة فرع
+│   ├── edit.php              # تعديل فرع
+│   └── delete.php            # حذف فرع
+├── employees/
+│   ├── index.php             # عرض الموظفين
+│   ├── add.php               # إضافة موظف
+│   ├── edit.php              # تعديل موظف
+│   ├── delete.php            # حذف موظف
+│   └── profile.php           # صفحة ملف الموظف
+├── attendance/
+│   ├── index.php             # عرض الحضور والغياب
+│   ├── import_zkteco.php     # استيراد الحضور من جهاز البصمة
+│   ├── manual_entry.php      # إدخال يدوي للحضور
+│   ├── report.php            # تقارير الحضور حسب الموظف أو الفرع
+├── shifts/
+│   ├── index.php             # الورديات
+│   ├── add.php               # إضافة وردية
+│   ├── edit.php              # تعديل وردية
+│   ├── delete.php            # حذف وردية
+│   ├── assign.php            # تعيين وردية لموظف
+├── leaves/
+│   ├── index.php             # الإجازات
+│   ├── add.php               # إضافة إجازة
+│   ├── edit.php              # تعديل إجازة
+│   ├── delete.php            # حذف إجازة
+├── salaries/
+│   ├── index.php             # عرض المرتبات
+│   ├── calculate.php         # حساب المرتب آليًا
+│   ├── report.php            # تقارير الرواتب
+│   ├── export_excel.php      # تصدير Excel
+│   ├── export_pdf.php        # تصدير PDF
+├── rewards/
+│   ├── index.php             # عرض المكافآت
+│   ├── add.php               # إضافة مكافأة
+│   ├── edit.php              # تعديل مكافأة
+│   ├── delete.php            # حذف مكافأة
+├── penalties/
+│   ├── index.php             # عرض الخصومات والعقوبات
+│   ├── add.php               # إضافة خصم
+│   ├── edit.php              # تعديل خصم
+│   ├── delete.php            # حذف خصم
+├── tasks/
+│   ├── index.php             # المهام
+│   ├── add.php               # إضافة مهمة
+│   ├── edit.php              # تعديل مهمة
+│   ├── delete.php            # حذف مهمة
+├── documents/
+│   ├── index.php             # عرض مستندات الموظف
+│   ├── upload.php            # رفع مستندات
+│   ├── delete.php            # حذف مستند
+├── notifications/
+│   ├── index.php             # مركز التنبيهات
+│   └── settings.php          # إعدادات التنبيهات
+├── dashboard/
+│   ├── index.php             # لوحة المدير العام
+│   └── kpi.php               # الذكاء التحليلي (KPIs)
+├── api/
+│   ├── employees.php         # بيانات الموظفين
+│   ├── attendance.php        # بيانات الحضور
+│   └── salaries.php          # بيانات المرتبات
+├── assets/
+│   ├── css/
+│   ├── js/
+│   └── uploads/              # ملفات الموظفين والمستندات
+└── index.php                 # صفحة الدخول الرئيسية للنظام
+
+
+## Configuration
+
+- Database: `config/db.php`
+- Constants: `config/constants.php`
+
+## Authentication
+
+- Session is managed in `includes/auth.php`
+- All pages include permission checks using `has_permission()`
+
+## Database Installation
+
+- Run `installer/installer.php` or import `installer/schema.sql`
+
+## APIs
+
+- `api/employees.php` - returns employee data in JSON
+- `api/attendance.php` - returns attendance logs
+
+## Export
+
+- `salaries/export_excel.php` uses PHPSpreadsheet
+- `salaries/export_pdf.php` uses TCPDF
+
+## Notifications System
+
+- Configurable from `notifications/settings.php`
+- Triggered on:
+  - Late attendance
+  - Missed tasks
+  - Excessive absences
+
+## Customization
+
+- Themes: `assets/css`
+- Components: `includes/header.php`, `includes/footer.php`
+
+## Deployment
+
+- Upload project to `/public_html/` or desired directory
+- Ensure `uploads/` folder is writable (chmod 755 or 777)
+- Set correct DB credentials in `config/db.php`
+
+---
+
+## Security Notes
+
+- CSRF protection is recommended for forms
+- Use HTTPS in production
+
